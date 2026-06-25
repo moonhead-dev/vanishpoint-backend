@@ -1,12 +1,15 @@
 FROM mcr.microsoft.com/playwright:v1.44.0-jammy
- 
+
 WORKDIR /app
- 
+
 # Install Node dependencies
 COPY package*.json ./
 RUN npm ci --omit=dev
- 
+
+# Run the TypeScript compiler step
+RUN npm run build
+
 # Copy compiled TypeScript output
 COPY dist/ ./dist/
- 
+
 CMD ["node", "dist/worker.js"]
